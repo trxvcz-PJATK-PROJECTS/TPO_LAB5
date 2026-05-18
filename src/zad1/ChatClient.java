@@ -28,7 +28,7 @@ public class ChatClient {
         this.port = port;
         this.id = id;
         this.chatView = new StringBuilder();
-        this.chatView.append("=== ").append(id).append(" chat view\n");
+//        this.chatView.append("=== ").append(id).append(" chat view\n");
         this.logoutLatch = new CountDownLatch(1);
     }
 
@@ -46,7 +46,7 @@ public class ChatClient {
                         
                         if (line.equals(id + " logged out") || line.equals("ChatServer: chat closed")) {
                             logoutLatch.countDown();
-                            if (line.equals("ChatServer: chat closed")) break;
+                            break;
                         }
                     }
                 } catch (IOException e) {
