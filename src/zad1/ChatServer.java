@@ -8,6 +8,7 @@ package zad1;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.concurrent.*;
@@ -56,7 +57,7 @@ public class ChatServer {
         isRunning = false;
         try {
             if (serverSocket != null) serverSocket.close();
-        } catch (IOException e) {
+        } catch (IOException _) {
         }
         
         logAndBroadcast("ChatServer: chat closed");
@@ -67,9 +68,9 @@ public class ChatServer {
 
     private void handleClient(Socket socket) {
         try (
-            socket;
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-            PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true)
+                socket;
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                PrintWriter out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true)
         ) {
             String line;
             String id = null;
@@ -94,7 +95,7 @@ public class ChatServer {
                     }
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException _) {
         }
     }
 

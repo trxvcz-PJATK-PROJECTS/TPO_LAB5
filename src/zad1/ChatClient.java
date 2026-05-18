@@ -8,6 +8,7 @@ package zad1;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 
 public class ChatClient {
@@ -19,7 +20,7 @@ public class ChatClient {
     private PrintWriter out;
     private BufferedReader in;
     private Thread readerThread;
-    
+
     private final StringBuilder chatView;
     private final CountDownLatch logoutLatch;
 
@@ -35,15 +36,15 @@ public class ChatClient {
     public void login() {
         try {
             socket = new Socket(host, port);
-            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+            out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
 
             readerThread = new Thread(() -> {
                 try {
                     String line;
                     while ((line = in.readLine()) != null) {
                         chatView.append(line).append("\n");
-                        
+
                         if (line.equals(id + " logged out") || line.equals("ChatServer: chat closed")) {
                             logoutLatch.countDown();
                             break;
@@ -51,7 +52,7 @@ public class ChatClient {
                     }
                 } catch (IOException e) {
                     if (!socket.isClosed()) {
-                        chatView.append("*** ").append(e.toString()).append("\n");
+                        chatView.append("*** ").append(e).append("\n");
                     }
                 } finally {
                     logoutLatch.countDown();
@@ -61,7 +62,7 @@ public class ChatClient {
             
             out.println("LOGIN\t" + id);
         } catch (IOException e) {
-            chatView.append("*** ").append(e.toString()).append("\n");
+            chatView.append("*** ").append(e).append("\n");
         }
     }
 
@@ -80,7 +81,7 @@ public class ChatClient {
                 socket.close();
             }
         } catch (IOException e) {
-            chatView.append("*** ").append(e.toString()).append("\n");
+            chatView.append("*** ").append(e).append("\n");
         }
     }
 

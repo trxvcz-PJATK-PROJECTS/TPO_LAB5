@@ -71,7 +71,7 @@ public class MainChatVT {
 
   public static void main(String[] args) throws Exception {
     String testFileName = System.getProperty("user.home") + "/ChatTestVT.yaml";
-    String options = Files.readString(Path.of(testFileName), Charset.forName("UTF-8"));
+    String options = Files.readString(Path.of(testFileName), StandardCharsets.UTF_8);
     System.out.println("=== Options\n" + options);
 
     Map<String, List<Integer>> imap = (Map<String, List<Integer>>) new Yaml().load(options);
